@@ -1,0 +1,35 @@
+{
+    "name": "jdorn/php-reports",
+    "description": "A PHP framework for displaying reports from any data source, including SQL and MongoDB",
+    "homepage": "http://jdorn.github.com/php-reports/",
+    "keywords": ["reports", "mongodb", "sql", "reporting", "csv", "database"],
+    "license": "LGPL-3.0+",
+    "authors": [
+        {
+            "name": "Jeremy Dorn",
+            "email": "jeremy@jeremydorn.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3",
+        "ext-pdo": "*",
+        "twig/twig": "1.*",
+        "swiftmailer/swiftmailer": "5.*",
+        "mikecao/flight": "dev-master",
+        "jdorn/sql-formatter": "dev-master",
+        "jdorn/file-system-cache": "dev-master",
+        "phpoffice/phpexcel": "dev-develop",
+        "adodb/adodb-php": "dev-master",
+        "lespoilus/spyc": "dev-master",
+        "google/apiclient": "1.0.*@beta"
+    },
+    "autoload": {
+        "files": [
+            "lib/adodb/pivottable.inc.php"
+        ],
+        "classmap": [
+            "vendor/jdorn/file-system-cache/"
+        ]
+    },
+    "minimum-stability": "dev"
+}
