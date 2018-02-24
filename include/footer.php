@@ -48,7 +48,7 @@
 </footer>
 <script>
     $(document).ready(function() {
-        var sleeping = 1000; //tempo di attesa a ciclo
+        var sleeping = 1000; //tempo di attesa a ciclo in millisecondi
         var attemps2save = 10; //tentativi prima di salvare/verificare
         var difficult = 4; //numero di 0 iniziali per chiudere il blocco
         var zeri = '';
