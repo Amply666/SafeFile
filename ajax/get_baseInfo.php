@@ -16,6 +16,16 @@ include '../include/key.php';
         
     }
     
+    if (isset($id) ){
+        $qry1 = 'Select attemps from sha_main_block where id='.$id ;
+        $attNum = get_value($conn, $qry1);
+        $val = intval($attNum) + intval($verifiche);
+        
+        $QryupdCoun = 'update sha_main_block set attemps = '.$val.' where id='.$id;
+        mysqli_query($conn, $QryupdCoun);  
+        //echo $QryupdCoun;
+    }
+        
         $query="select id, data_genesi, file, size, name, note, hash_file, hash_blocco, hash_blocco_pre from sha_main_block where hash_blocco is null order by id asc limit 1";
         $esegui = mysqli_query($conn, $query)
         or die("Queri non valida: " . mysql_error() ."<hr>QUERY:". $query);     
@@ -34,3 +44,14 @@ $rows = array();
 echo '{ "data": ';
 print(json_encode($rows));
 echo '}';
+
+function get_value($conn, $sql) {
+        $result = mysqli_query($conn, $sql)
+                or die("Queri non valida: " . mysql_error() ."<hr>QUERY:". $sql);    
+    
+        while ($row = mysqli_fetch_array($result, MYSQLI_NUM)){
+            $rows[] = $row[0];
+        }
+
+    return is_array($rows) ? $rows[0] : "";
+}
