@@ -59,7 +59,6 @@
             i++;
         }
         
-        //console.log(zeri);
         GetBlockPak();
                 
         var i = 0;
