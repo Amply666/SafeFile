@@ -34,7 +34,7 @@
                         <ul class="list-unstyled">
                             <li><i class="fa fa-angle-double-right"></i>Blocco in elaborazione: <a href="#"><span id="blocco">12</span></a></li>
                             <li><i class="fa fa-angle-double-right"></i>SHA256:<a href="#"><span id='shaX'>453233a017973d98ed8618e0c7daadaed0bc965347a2a11d5af4a5d4d0bf1614</span></a></li>    
-                            <li><i class="fa fa-angle-double-right"></i>S.C.P.*:<a href="#"><span id='sha'>000003a017973d98ed8618e0c7daadaed0bc965347a2a11d5af4a5d4d0bf1614</span></a></li>
+                            <li><i class="fa fa-angle-double-right"></i>H.B.P.*:<a href="#"><span id='sha'>000003a017973d98ed8618e0c7daadaed0bc965347a2a11d5af4a5d4d0bf1614</span></a></li>
                             <li><i class="fa fa-angle-double-right"></i>Test: <a href="#"><span id="test">0</span></a></li>
                         </ul>
                 </div>
@@ -43,14 +43,14 @@
         </div>
         <hr>
         
-        <div class="row text-center"> *S.C.P. = Smart Contract Precedente <BR> © 2018. Made by Amply81.</div>
+        <div class="row text-center"> *H.B.P. = Hash Blocco Precedente <BR> © 2018. Made by Amply81.</div>
     </div>
 </footer>
 <script>
     $(document).ready(function() {
-        var sleeping = 1000; //tempo di attesa a ciclo in millisecondi
+        var sleeping = 500; //tempo di attesa a ciclo in millisecondi
         var attemps2save = 10; //tentativi prima di salvare/verificare
-        var difficult = 4; //numero di 0 iniziali per chiudere il blocco
+        var difficult = 5; //numero di 0 iniziali per chiudere il blocco
         var zeri = '';
         var i = 0;
         
@@ -72,37 +72,44 @@
                 var array = new Uint32Array(1);
                 window.crypto.getRandomValues(array);
                 var nonce = array[0];
-                $('#test').text(nonce);           
+                $('#test').text(nonce); 
                 
                 hash = Gen_HASH_sha256(shaX+nonce);
                 console.log(hash);
                 if (hash.slice(0,difficult) === zeri){
                     //
                     console.log('COMPLIMENTI!!! hai trovato il blocco N. '+id);
-                    GetBlockPak(i, 1, nonce, id);
+                    GetBlockPak(i, 1, nonce, id, hash);
+                }else{
+                    i++;
+                    if (i >= attemps2save){
+                        GetBlockPak(i, 0, 0, id, 0);
+                        i = 0;
+                    }else{
+                        recursive(dati);
+                    } 
                 }
                 
-                i++;
-                if (i >= attemps2save){
-                    GetBlockPak(i, 0, 0, id);
-                    i = 0;
-                }else{
-                    recursive(dati);
-                }
+                
             }, sleeping);
         }
 
-        function GetBlockPak(verifiche, found, nonce, id){
+        function GetBlockPak(verifiche, found, nonce, id, hash){
             $.ajax({ url: "ajax/get_baseInfo.php",
                 type: "post",
                 data: {
                             verifiche : verifiche,
                             found     : found, 
                             nonce     : nonce,
-                            id        : id
+                            id        : id,
+                            hash      : hash
                         },
                 success: function(res){
-                recursive($.parseJSON(res));
+                    var Resu = $.parseJSON(res);
+                recursive(Resu);
+                console.log("RES:"+Resu['test']);
+                
+                
             }}); 
         }
         
